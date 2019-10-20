@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Custom Elements Tree</title>
+		<style>
+			*{				
+				padding: 0;
+				font-family: sans-serif;
+			}
+			.tree{
+				margin-left: 50px;
+				border: 1px solid #A1887F;
+				background: #5D4037;
+				border-top-right-radius: 30px;
+				border-bottom-right-radius: 80px;
+				width: 60px;
+			}
+			.leaf{				
+				margin-top: 10px;
+				border: 1px solid #1B5E20;
+				color: white;
+				border-top-left-radius: 25px;
+				border-bottom-right-radius: 25px;
+				text-align: center;
+				width: 50px;
+				margin-left: 50px;
+				background: #66BB6A;
+			}
+		</style>
+	</head>
+	<body>		
+		<script type="module">
+			import {html, render} from 'https://unpkg.com/lit-html?module';
+			
+			const example = {
+				"id": 1,
+				"items": [
+					{
+						"id": 2,
+						"items": [{ "id": 3 }, { "id": 4, items: [{id: 5}, {id:6}, {id: 7, items: [{id: 8, id: 9}]}]}]
+					},
+					{
+						"id": 10,
+						"items": [{ "id": 11 }]
+					}
+				]
+			};
+			
+			const myLeaf = (item) => {				
+				return html`<div class="leaf">
+								id=${item.id}
+							</div>`;
+			}		
+			
+			const myTree = (json) => {
+				return html`<div class="tree" id="${json.id}">
+								${myLeaf(json)}<br>
+								${json.items && json.items.map((tree) => myTree(tree))}
+							</div>`;
+			};			
+			
+			render(myTree(example), document.body);				
+		</script>		
+	</body>
+</html>
