@@ -37,7 +37,7 @@
 				"items": [
 					{
 						"id": 2,
-						"items": [{ "id": 3 }, { "id": 4, items: [{id: 5}, {id:6}, {id: 7, items: [{id: 8, id: 9}]}]}]
+						"items": [{ "id": 3 }, { "id": 4, items: [{id: 5}, {id:6}, {id: 7, items: [{id: 8}, {id: 9}]}]}]
 					},
 					{
 						"id": 10,
@@ -48,15 +48,15 @@
 			
 			const myLeaf = (item) => {				
 				return html`<div class="leaf">
-								id=${item.id}
-							</div>`;
+						id=${item.id}
+					    </div>`;
 			}		
 			
 			const myTree = (json) => {
 				return html`<div class="tree" id="${json.id}">
-								${myLeaf(json)}<br>
-								${json.items && json.items.map((tree) => myTree(tree))}
-							</div>`;
+						${myLeaf(json)}<br>
+						${json.items && json.items.map((tree) => myTree(tree))}
+					    </div>`;
 			};			
 			
 			render(myTree(example), document.body);				
