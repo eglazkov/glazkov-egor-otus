@@ -1,7 +1,7 @@
 /***
   * Скрипт тестирования запросов к локальному серверу localhost:3000
   * 2 режима выполнения запросов: последовательный - sync и параллельный - async
-  * Для выполнения тестирования, задать скрипт test в package.json вида "test": "node request.js @numOfReq @reqType",
+  * Для выполнения тестирования, задать скрипт test в package.json вида "test": "node request.js @reqType @numOfReq",
   * где numOfReq - количество запросов, reqType - тип запроса (async, sync)
   * Старт теста осуществляется командой npm run ci
   */
