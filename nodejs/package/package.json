@@ -1,0 +1,16 @@
+{
+  "name": "local_server_requester",
+  "version": "1.0.0",
+  "description": "Testing local web-server by multiply http-request",
+  "main": "server.js",
+  "scripts": {
+    "test": "node request.js sync 500",
+    "start-server": "node server.js",
+    "ci": "start-server-and-test start-server http://localhost:3000/ test"
+  },
+  "author": "egorglazkov@mail.ru",
+  "license": "ISC",
+  "devDependencies": {
+    "start-server-and-test": "^1.10.6"
+  }
+}
