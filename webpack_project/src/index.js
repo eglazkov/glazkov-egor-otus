@@ -49,8 +49,7 @@ const TodoApp = ({todoList}) =>( //jsx-верстка react-приложения
                 {todoList && todoList.map( (item, index) =>
                   <div key={index}>
                       <li onClick={() => {
-                          todoList[index].isCompleted = !item.isCompleted;
-                          window.todoList = todoList;
+                          todoList[index].isCompleted = !item.isCompleted;                          
                           renderTodoList(todoList);
                       }} style={{textDecoration: item.isCompleted ? 'line-through' : null}}>{item.value}</li>
                   </div>)}
