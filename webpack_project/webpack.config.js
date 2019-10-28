@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/index.js',
     devtool: 'source-map',
     resolve: {
-        extensions: ['.js', 'jsx', '.json', '.ts']
+        extensions: ['.js', 'jsx', '.json', '.ts', '.tsx']
     },
     output: {
         path: path.join(__dirname, '/dist'),
@@ -15,7 +15,8 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.(js|ts)x?$/,
+                exclude: /node_modules/,
                 loader: 'babel-loader'
             }
         ]
