@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/index.js',
     devtool: 'source-map',
     resolve: {
-        extensions: ['.js', 'jsx', '.json', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
     },
     output: {
         path: path.join(__dirname, '/dist'),
