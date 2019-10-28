@@ -36,6 +36,7 @@ const TodoApp = ({todoList}) =>( //jsx-верстка react-приложения
                 return;
             }
             todoList.push({value: input.value, isCompleted: false});
+            input.value = '';
             window.todoList = todoList;
             render(TodoApp({todoList: todoList}), document.getElementById("root"));
         }}>
