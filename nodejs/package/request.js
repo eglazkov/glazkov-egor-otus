@@ -25,9 +25,7 @@ const createHttpPromise = (indexOfReq) =>
         return reject(new Error('statusCode=' + res.statusCode));
       }
       let body = [];
-      res.on('data', (chunk) => {
-        body.push(chunk);
-      });
+      res.on('data', (chunk) => body.push(chunk));
       res.on('end', () => {
         try {
           body = Buffer.concat(body).toString();
