@@ -25,7 +25,8 @@ class App extends Component<IProps, IState> {
         };
 
         this.getWeatherByCityName = this.getWeatherByCityName.bind(this);
-        this.addToFav = this.addToFav.bind(this);
+        this.addToFavorites = this.addToFavorites.bind(this);
+        this.removeFromFavorites = this.removeFromFavorites.bind(this);
     }
 
     componentDidMount(): void {
@@ -39,15 +40,17 @@ class App extends Component<IProps, IState> {
                 this.setState({data: {}, cityNotFound: true}));
     }
 
-    addToFav(favItem, favorites, remove){
+    addToFavorites(favItem, favorites){
         const obj = {};
-        obj[favItem.name+''] = {name: favItem.name};
-        if(remove){
-            delete favorites[favItem.name+''];
-            this.setState({favorites: favorites});
-        }else{
-            this.setState({favorites: Object.assign(favorites, obj)});
-        }
+        obj[String(favItem.name)] = {name: favItem.name};
+        this.setState({favorites: Object.assign(favorites, obj)});
+    }
+
+    removeFromFavorites(favItem, favorites){
+        const obj = {};
+        obj[String(favItem.name)] = {name: favItem.name};
+        delete favorites[String(favItem.name)];
+        this.setState({favorites: favorites});
     }
 
 
@@ -56,8 +59,8 @@ class App extends Component<IProps, IState> {
         return (
             <div style={{display: 'flex', justifyContent: 'flex-start', fontFamily: 'sans-serif'}}>
                 <div>
-                    <SearchBar cityNotFound={cityNotFound} getWeather={(cityName) => this.getWeatherByCityName(cityName)} />
-                    <Results data={data} favorites={favorites} addToFav={(favItem, remove) => this.addToFav(favItem, favorites, remove)}/>
+                    <SearchBar cityNotFound={cityNotFound} getWeather={this.getWeatherByCityName} />
+                    <Results data={data} favorites={favorites} addToFavorites={this.addToFavorites} removeFromFavorites={this.removeFromFavorites}/>
                 </div>
                 <FavList showFav={(cityName) => this.getWeatherByCityName(cityName)} favorites={Object.values(favorites)}/>
             </div>
