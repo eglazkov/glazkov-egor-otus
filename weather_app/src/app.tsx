@@ -1,47 +1,51 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import fetchWeather from './fetchWeather';
+import {getWeatherError, getWeather, getWeatherPending} from './weatherReducer';
 
 import SearchBar from './components/searchBar';
 import Results from "./components/results";
 import FavList from './components/favList';
+import PendingSpinner from './components/pendingSpinner';
 
-interface IProps {}
+interface IProps {
+    fetchWeather: any;
+    weather: any;
+    error: any;
+    pending: any;
+}
 interface IState {
-    cityName: string;
-    cityNotFound: boolean;
-    data: any;
+    cityName: string;        
     favorites: any;
 }
 
-const getWeatherByCityName = (name) => {
-    return fetch(`https://api.openweathermap.org/data/2.5/weather?q=${name}&APPID=1ddd872d319ebc1ceaa4fcec9d9cd620&units=metric`)
-        .then((res) => res.json());        
-};
+//HOC const getWeatherByCityName = (name) => {
+    //fetchWeather(name);
+//};
 
-const appWithWeatherData = Weather => class App extends Component<IProps, IState> {
+// HOC const appWithWeatherData = Weather => class App extends Component<IProps, IState> {
+class App extends Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            cityName: '',
-            cityNotFound: false,
-            data: {},
+            cityName: '',            
             favorites: {}
         };
 
-        this.getWeatherStateUpdate = this.getWeatherStateUpdate.bind(this);
+        this.getWeatherByCityName = this.getWeatherByCityName.bind(this);
         this.addToFavorites = this.addToFavorites.bind(this);
         this.removeFromFavorites = this.removeFromFavorites.bind(this);
     }
 
     componentDidMount(): void {        
-        Weather('Moscow').then(json => json.cod === 200 ? this.setState({data: json, cityNotFound: false}) :
-        this.setState({data: {}, cityNotFound: true}));        
+        this.getWeatherByCityName('Moscow');        
     }
 
-    getWeatherStateUpdate(name){
-        Weather(name).then(json => json.cod === 200 ? this.setState({data: json, cityNotFound: false}) :
-        this.setState({data: {}, cityNotFound: true}))
+    getWeatherByCityName(name){        
+        this.props.fetchWeather(name);
     }
     
     addToFavorites(favItem, favorites){
@@ -59,18 +63,29 @@ const appWithWeatherData = Weather => class App extends Component<IProps, IState
 
 
     render(){
-        const {cityNotFound, data, favorites} = this.state;
+        const {favorites} = this.state;         
+        const {error, weather, pending} = this.props;        
         return (
             <div style={{display: 'flex', justifyContent: 'flex-start', fontFamily: 'sans-serif'}}>
                 <div>
-                    <SearchBar cityNotFound={cityNotFound} getWeather={(cityName) => this.getWeatherStateUpdate(cityName)} />
-                    <Results data={data} favorites={favorites} addToFavorites={this.addToFavorites} removeFromFavorites={this.removeFromFavorites}/>
+                    <SearchBar errorMsg={!pending && error} getWeather={(cityName) => this.getWeatherByCityName(cityName)} />                    
+                    {pending ? <PendingSpinner /> : <Results data={weather} favorites={favorites} addToFavorites={this.addToFavorites} removeFromFavorites={this.removeFromFavorites}/>}
                 </div>
-                <FavList showFav={(cityName) => this.getWeatherStateUpdate(cityName)} favorites={Object.values(favorites)}/>
+                <FavList showFav={(cityName) => this.getWeatherByCityName(cityName)} favorites={Object.values(favorites)}/>
             </div>
         );
     };
 }
 
-const App = appWithWeatherData(getWeatherByCityName);
-export default App;
+const mapStateToProps = state => ({
+    error: getWeatherError(state),
+    weather: getWeather(state),
+    pending: getWeatherPending(state)
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchWeather: fetchWeather
+}, dispatch)
+
+//HOC const App = appWithWeatherData(getWeatherByCityName);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
