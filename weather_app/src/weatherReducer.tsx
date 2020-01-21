@@ -6,7 +6,7 @@ const initialState = {
     error: null
 }
 
-export function weatherReducer(state = initialState, action) {
+export function weatherReducer(state = initialState, action) {    
     switch(action.type) {
         case FETCH_WEATHER_PENDING: 
             return {
@@ -26,7 +26,7 @@ export function weatherReducer(state = initialState, action) {
                 ...state,
                 pending: false,
                 error: action.error,
-                weather: {}
+                weather: {list: []}
             }
         default: 
             return state;

@@ -1,16 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 interface IProps {
-    favorites: any;
-    showFav: any;
+    favorites: any;    
 }
 
 interface IState {}
 
 class FavList extends Component<IProps, IState> {
 
-    render(){
-        const {favorites, showFav} = this.props;
+    render(){        
+        let {favorites} = this.props;        
+        favorites = favorites.sort((a, b) => {            
+            return a.name < b.name ? -1 : (a.name > b.name) ? 1 : 0;
+        });
         return (
             <div style={{marginLeft: '50px'}}>
                 <h3 style={{margin: 0}}>Favorites</h3>
