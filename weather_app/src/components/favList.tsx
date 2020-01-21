@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 interface IProps {
     favorites: any;    
@@ -18,7 +19,10 @@ class FavList extends Component<IProps, IState> {
                 <h3 style={{margin: 0}}>Favorites</h3>
                 <ul style={{padding: 0}}>
                     {favorites && favorites.map((item, index) => {
-                        return <li style={{cursor: 'pointer', listStyleType: 'none', padding: '5px 0'}} key={index} onClick={() => showFav(item.name)}>{item.name}</li>
+                        return( 
+                        <Link to={`/city/${item.id}`} key={item.id} style={{marginTop: '15px', color: 'inherit', textDecoration: 'none'}}>                
+                            <li style={{cursor: 'pointer', listStyleType: 'none', padding: '5px 0'}} key={index}>{`${item.country}, ${item.name}`}</li>
+                        </Link>);
                     })}
                 </ul>
             </div>
